@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Práctica de Números Enteros — 10 Operaciones</title>
+<style>
+  :root{
+    --bg1:#e0f2fe; /* sky-100 */
+    --bg2:#fae8ff; /* fuchsia-100 */
+    --bg3:#ffedd5; /* amber-100 */
+    --card:#ffffffcc;
+    --text:#0f172a; /* slate-900 */
+    --muted:#475569; /* slate-600 */
+    --primary:#0ea5e9; /* sky-500 */
+    --primary-2:#38bdf8; /* sky-400 */
+    --accent:#f59e0b; /* amber-500 */
+    --ok:#16a34a; /* green-600 */
+    --bad:#dc2626; /* red-600 */
+    --ring: rgba(56,189,248,.45);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+    color: var(--text);
+    background: radial-gradient(1200px 800px at 10% 10%, var(--bg1), transparent),
+               radial-gradient(1000px 800px at 90% 10%, var(--bg2), transparent),
+               radial-gradient(1200px 1000px at 50% 100%, var(--bg3), transparent),
+               #f8fafc;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .card{
+    width:min(960px, 100%);
+    background: var(--card);
+    backdrop-filter: blur(8px);
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(2, 6, 23, .08);
+  }
+  .card-header{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px 8px; }
+  .title{ font-weight:800; font-size: clamp(20px, 2.2vw, 28px); display:flex; align-items:center; gap:10px; }
+  .subtitle{ color: var(--muted); font-size:14px; }
+  .dice{ font-size:22px; }
+
+  .card-body{ padding: 16px 22px 22px; }
+  .progress{ width:100%; height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
+  .bar{ height:100%; width:0%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width .3s ease; }
+
+  .grid{ display:grid; grid-template-columns: 1fr; gap:16px; align-items:end; }
+  @media (min-width: 820px){ .grid{ grid-template-columns: 1fr auto; } }
+
+  .prompt{ color: var(--muted); font-size:14px; }
+  .op{ font-size: clamp(34px, 5vw, 56px); font-weight:900; letter-spacing:.5px; }
+
+  .input{ width: min(380px, 100%); padding:14px 16px; font-size:18px; border:1px solid #cbd5e1; border-radius:16px; box-shadow: 0 1px 0 rgba(2,6,23,.02); }
+  .input:focus{ outline:none; border-color: var(--primary-2); box-shadow: 0 0 0 6px var(--ring); }
+
+  .btns{ display:flex; gap:10px; flex-wrap:wrap; }
+  .btn{ padding:12px 18px; border-radius:16px; border:none; font-weight:700; cursor:pointer; transition: transform .05s ease, box-shadow .2s ease; box-shadow: 0 6px 14px rgba(14,165,233,.18); }
+  .btn:active{ transform: translateY(1px); }
+  .btn.primary{ background: linear-gradient(180deg, var(--primary), var(--primary-2)); color:#fff; }
+  .btn.secondary{ background:#f1f5f9; color:#0f172a; box-shadow:none; border:1px solid #e2e8f0; }
+
+  .legend{ margin-top:6px; color:var(--muted); font-size:12px; }
+  .hint{ margin-top:10px; color:#64748b; font-size:12px; }
+
+  .result-title{ display:flex; align-items:center; gap:10px; font-weight:900; font-size: clamp(22px, 2.4vw, 28px); margin-top:6px; }
+  .score{ color:#111827; }
+  .list{ margin-top:18px; display:grid; gap:10px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1px solid #e5e7eb; border-radius:16px; background:#fff; }
+  .ok{ color: var(--ok); }
+  .bad{ color: var(--bad); }
+  .blank{ color:#334155; }
+  .footer{ margin-top:18px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .tiny{ color:var(--muted); font-size:12px; }
+
+  .fade-enter{ animation: fadeIn .25s ease both; }
+  @keyframes fadeIn{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
+
+  .badge{ font-size:12px; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#4338ca; border:1px solid #e0e7ff; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <header class="card-header">
+      <div class="title"><span class="dice">🎲</span> ¡Práctica de Números Enteros!</div>
+      <div class="subtitle" id="status">Pregunta 1 de 10</div>
+    </header>
+    <section class="card-body">
+      <div class="progress" aria-label="progreso"><div class="bar" id="bar"></div></div>
+
+      <div id="quiz" class="fade-enter">
+        <div class="grid">
+          <div>
+            <div class="prompt">Resuelve la operación</div>
+            <div class="op" id="operation">(3) + (−2) = ?</div>
+            <div class="legend"><span class="badge">Puntuación</span> Correcta: +1 · Incorrecta: −0,5 · En blanco: 0</div>
+          </div>
+          <div>
+            <input id="answer" class="input" inputmode="numeric" placeholder="Escribe un número entero (puede ser negativo)" />
+            <div class="btns" style="margin-top:10px">
+              <button class="btn primary" id="check">Comprobar</button>
+              <button class="btn secondary" id="skip">Saltar</button>
+            </div>
+          </div>
+        </div>
+        <div class="hint">Consejo: Los números negativos se muestran entre paréntesis para que sean más claros.</div>
+      </div>
+
+      <div id="final" style="display:none" class="fade-enter">
+        <div class="result-title">🏆 Resultado final: <span class="score" id="score">0</span> puntos</div>
+        <div class="tiny">Se muestran tus respuestas y la solución de cada operación.</div>
+        <div id="list" class="list"></div>
+        <div class="footer">
+          <div class="tiny">¿Otra partida? Se generan 10 operaciones nuevas al reiniciar.</div>
+          <button class="btn primary" id="restart">🔄 Reiniciar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+(function(){
+  const TOTAL = 10;
+  const statusEl = document.getElementById('status');
+  const bar = document.getElementById('bar');
+  const opEl = document.getElementById('operation');
+  const input = document.getElementById('answer');
+  const checkBtn = document.getElementById('check');
+  const skipBtn = document.getElementById('skip');
+  const quiz = document.getElementById('quiz');
+  const final = document.getElementById('final');
+  const scoreEl = document.getElementById('score');
+  const listEl = document.getElementById('list');
+  const restartBtn = document.getElementById('restart');
+
+  function rnd(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function choose(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+  function formatInt(n){ return n < 0 ? `(${n})` : `${n}`; }
+
+  function buildQuestion(){
+    const ops = ['+','-','×'];
+    const op = choose(ops);
+    let a,b;
+    if(op==='×'){ a=rnd(-10,10); b=rnd(-10,10); if(a===0 && b===0) b=1; }
+    else { a=rnd(-20,20); b=rnd(-20,20); }
+    let result = op==='+'? a+b : op==='-'? a-b : a*b;
+    return {a,b,op,result};
+  }
+  function generateQuiz(n=TOTAL){ return Array.from({length:n}, buildQuestion); }
+
+  let questions = generateQuiz();
+  let idx = 0;
+  let answers = []; // {given, correct, blank, expected}
+
+  function updateUI(){
+    statusEl.textContent = idx < TOTAL ? `Pregunta ${idx+1} de ${TOTAL}` : 'Completado';
+    bar.style.width = `${(answers.length/TOTAL)*100}%`;
+    if(idx < TOTAL){
+      const q = questions[idx];
+      opEl.textContent = `${formatInt(q.a)} ${q.op} ${formatInt(q.b)} = ?`;
+      input.value='';
+      input.focus();
+    }
+  }
+
+  function submit(action){
+    const q = questions[idx];
+    const blank = action==='skip' || input.value.trim()==='';
+    let correct=false; let given=input.value.trim();
+    if(!blank){
+      const n = Number(given);
+      if(Number.isInteger(n)) correct = (n===q.result);
+      else correct=false; // no es entero
+    }
+    answers.push({ given, correct, blank, expected:q.result, a:q.a, b:q.b, op:q.op });
+    idx++;
+
+    if(idx>=TOTAL){ endGame(); } else { updateUI(); }
+  }
+
+  function calcScore(){
+    return answers.reduce((s,a)=> s + (a.blank?0:(a.correct?1:-0.5)), 0);
+  }
+
+  function endGame(){
+    quiz.style.display='none';
+    final.style.display='block';
+    scoreEl.textContent = calcScore().toFixed(1);
+    listEl.innerHTML='';
+    answers.forEach((a,i)=>{
+      const row=document.createElement('div'); row.className='row';
+      const left=document.createElement('div'); left.style.fontWeight='700'; left.style.fontSize='18px';
+      left.textContent = `${formatInt(a.a)} ${a.op} ${formatInt(a.b)} = ${a.expected}`;
+      const right=document.createElement('div'); right.style.display='flex'; right.style.alignItems='center'; right.style.gap='8px'; right.style.fontSize='14px';
+      if(a.blank){ right.className='blank'; right.textContent='◻️ En blanco'; }
+      else if(a.correct){ right.className='ok'; right.textContent='✅ ¡Correcta!'; }
+      else { right.className='bad'; right.textContent=`❌ Incorrecta (tu respuesta: ${a.given||'—'})`; }
+      row.append(left,right); listEl.appendChild(row);
+    });
+    statusEl.textContent='Completado';
+    bar.style.width='100%';
+  }
+
+  function restart(){
+    questions = generateQuiz(); idx=0; answers=[];
+    final.style.display='none'; quiz.style.display='block';
+    updateUI();
+  }
+
+  checkBtn.addEventListener('click', ()=> submit('submit'));
+  skipBtn.addEventListener('click', ()=> submit('skip'));
+  restartBtn.addEventListener('click', restart);
+  input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submit('submit'); });
+
+  updateUI();
+})();
+</script>
+</body>
+</html>
