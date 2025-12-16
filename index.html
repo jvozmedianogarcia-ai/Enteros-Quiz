@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Práctica de Números Enteros — 10 Operaciones</title>
+<title>Diviértete con las Mates</title>
 <style>
   :root{
-    --bg1:#e0f2fe; /* sky-100 */
-    --bg2:#fae8ff; /* fuchsia-100 */
-    --bg3:#ffedd5; /* amber-100 */
+    --bg1:#e0f2fe;
+    --bg2:#fae8ff;
+    --bg3:#ffedd5;
     --card:#ffffffcc;
-    --text:#0f172a; /* slate-900 */
-    --muted:#475569; /* slate-600 */
-    --primary:#0ea5e9; /* sky-500 */
-    --primary-2:#38bdf8; /* sky-400 */
-    --accent:#f59e0b; /* amber-500 */
-    --ok:#16a34a; /* green-600 */
-    --bad:#dc2626; /* red-600 */
+    --text:#0f172a;
+    --muted:#475569;
+    --primary:#0ea5e9;
+    --primary-2:#38bdf8;
+    --accent:#f59e0b;
+    --ok:#16a34a;
+    --bad:#dc2626;
     --ring: rgba(56,189,248,.45);
   }
   * { box-sizing: border-box; }
@@ -32,19 +32,18 @@
     padding:24px;
   }
   .card{
-    width:min(960px, 100%);
+    width:min(980px, 100%);
     background: var(--card);
     backdrop-filter: blur(8px);
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     box-shadow: 0 20px 50px rgba(2, 6, 23, .08);
   }
-  .card-header{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px 8px; }
-  .title{ font-weight:800; font-size: clamp(20px, 2.2vw, 28px); display:flex; align-items:center; gap:10px; }
+  .card-header{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px 10px; gap:12px; flex-wrap:wrap; }
+  .title{ font-weight:950; font-size: clamp(20px, 2.4vw, 30px); display:flex; align-items:center; gap:10px; }
   .subtitle{ color: var(--muted); font-size:14px; }
-  .dice{ font-size:22px; }
 
-  .card-body{ padding: 16px 22px 22px; }
+  .card-body{ padding: 14px 22px 22px; }
   .progress{ width:100%; height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
   .bar{ height:100%; width:0%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width .3s ease; }
 
@@ -52,24 +51,27 @@
   @media (min-width: 820px){ .grid{ grid-template-columns: 1fr auto; } }
 
   .prompt{ color: var(--muted); font-size:14px; }
-  .op{ font-size: clamp(34px, 5vw, 56px); font-weight:900; letter-spacing:.5px; }
+  .op{ font-size: clamp(28px, 4.8vw, 52px); font-weight:980; letter-spacing:.2px; line-height:1.1; word-break: break-word; }
 
-  .input{ width: min(380px, 100%); padding:14px 16px; font-size:18px; border:1px solid #cbd5e1; border-radius:16px; box-shadow: 0 1px 0 rgba(2,6,23,.02); }
+  .input{ width: min(460px, 100%); padding:14px 16px; font-size:18px; border:1px solid #cbd5e1; border-radius:16px; box-shadow: 0 1px 0 rgba(2,6,23,.02); }
   .input:focus{ outline:none; border-color: var(--primary-2); box-shadow: 0 0 0 6px var(--ring); }
 
   .btns{ display:flex; gap:10px; flex-wrap:wrap; }
-  .btn{ padding:12px 18px; border-radius:16px; border:none; font-weight:700; cursor:pointer; transition: transform .05s ease, box-shadow .2s ease; box-shadow: 0 6px 14px rgba(14,165,233,.18); }
+  .btn{ padding:12px 18px; border-radius:16px; border:none; font-weight:900; cursor:pointer; transition: transform .05s ease, box-shadow .2s ease; }
   .btn:active{ transform: translateY(1px); }
-  .btn.primary{ background: linear-gradient(180deg, var(--primary), var(--primary-2)); color:#fff; }
-  .btn.secondary{ background:#f1f5f9; color:#0f172a; box-shadow:none; border:1px solid #e2e8f0; }
+  .btn.primary{ background: linear-gradient(180deg, var(--primary), var(--primary-2)); color:#fff; box-shadow: 0 10px 18px rgba(14,165,233,.18); }
+  .btn.secondary{ background:#f1f5e9; color:#0f172a; box-shadow:none; border:1px solid #e2e8f0; }
+  .btn.danger{ background:#fff; color:#0f172a; border:1px solid #fecaca; box-shadow:none; }
 
   .legend{ margin-top:6px; color:var(--muted); font-size:12px; }
   .hint{ margin-top:10px; color:#64748b; font-size:12px; }
 
-  .result-title{ display:flex; align-items:center; gap:10px; font-weight:900; font-size: clamp(22px, 2.4vw, 28px); margin-top:6px; }
+  .result-title{ display:flex; align-items:center; gap:10px; font-weight:980; font-size: clamp(22px, 2.4vw, 28px); margin-top:6px; }
   .score{ color:#111827; }
-  .list{ margin-top:18px; display:grid; gap:10px; }
-  .row{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1px solid #e5e7eb; border-radius:16px; background:#fff; }
+  .list{ margin-top:16px; display:grid; gap:10px; }
+  .row{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1px solid #e5e7eb; border-radius:16px; background:#fff; gap:12px; }
+  .row .left{ font-weight:900; font-size:16px; }
+  .row .right{ font-size:14px; white-space:nowrap; }
   .ok{ color: var(--ok); }
   .bad{ color: var(--bad); }
   .blank{ color:#334155; }
@@ -80,142 +82,692 @@
   @keyframes fadeIn{ from{ opacity:0; transform: translateY(6px); } to{ opacity:1; transform:none; } }
 
   .badge{ font-size:12px; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#4338ca; border:1px solid #e0e7ff; }
+
+  .menu{ display:grid; gap:12px; margin-top:14px; grid-template-columns: 1fr; }
+  @media (min-width: 820px){ .menu{ grid-template-columns: 1fr 1fr; } }
+  .menu-btn{
+    text-align:left;
+    padding:14px 14px;
+    border-radius:18px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    cursor:pointer;
+    transition: transform .05s ease, box-shadow .2s ease;
+    box-shadow: 0 10px 22px rgba(2,6,23,.06);
+  }
+  .menu-btn:active{ transform: translateY(1px); }
+  .menu-btn .t{ font-weight:980; font-size:16px; }
+  .menu-btn .d{ color: var(--muted); font-size:12px; margin-top:4px; }
+  .pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:6px 10px; border-radius:999px;
+    background: linear-gradient(90deg, rgba(14,165,233,.12), rgba(245,158,11,.12));
+    border:1px solid rgba(14,165,233,.18);
+    color:#0f172a; font-size:12px; font-weight:900;
+  }
 </style>
 </head>
 <body>
   <main class="card">
     <header class="card-header">
-      <div class="title"><span class="dice">🎲</span> ¡Práctica de Números Enteros!</div>
-      <div class="subtitle" id="status">Pregunta 1 de 10</div>
+      <div>
+        <div class="title">🎉 Diviértete con las Mates</div>
+        <div class="subtitle" id="modeSubtitle">Elige un modo para empezar</div>
+      </div>
+      <div class="subtitle" id="status">—</div>
     </header>
-    <section class="card-body">
-      <div class="progress" aria-label="progreso"><div class="bar" id="bar"></div></div>
 
-      <div id="quiz" class="fade-enter">
+    <section class="card-body">
+      <div class="progress" aria-label="progreso" id="progressWrap" style="display:none"><div class="bar" id="bar"></div></div>
+
+      <div id="menu" class="fade-enter">
+        <div class="pill">✅ 10 preguntas · +1 / −0,5 / 0</div>
+        <div class="menu">
+          <button class="menu-btn" data-mode="enteros">
+            <div class="t">1) Números enteros</div>
+            <div class="d">Sumas, restas y multiplicaciones con positivos y negativos.</div>
+          </button>
+          <button class="menu-btn" data-mode="combinadas">
+            <div class="t">2) Operaciones combinadas</div>
+            <div class="d">Paréntesis y prioridad: × y ÷ antes que + y −.</div>
+          </button>
+          <button class="menu-btn" data-mode="fracciones">
+            <div class="t">3) Fracciones</div>
+            <div class="d">Suma, resta, producto y división de fracciones.</div>
+          </button>
+          <button class="menu-btn" data-mode="potencias">
+            <div class="t">4) Potencias</div>
+            <div class="d">Propiedades, operaciones y exponentes negativos.</div>
+          </button>
+          <button class="menu-btn" data-mode="radicales">
+            <div class="t">5) Radicales</div>
+            <div class="d">Operaciones con raíces y exponentes fraccionarios.</div>
+          </button>
+          <button class="menu-btn" data-mode="salir">
+            <div class="t">6) Salir</div>
+            <div class="d">Cierra la pestaña o vuelve cuando quieras.</div>
+          </button>
+        </div>
+        <div class="hint" style="margin-top:12px">
+          También puedes responder con expresiones: <b>2^3</b>, <b>(-3+1)*4</b>, <b>RAIZ(2,4)</b>, <b>5*RAIZ(2,4)</b>, <b>3*RAIZ(2,2)</b>.
+        </div>
+      </div>
+
+      <div id="quiz" class="fade-enter" style="display:none">
         <div class="grid">
           <div>
-            <div class="prompt">Resuelve la operación</div>
-            <div class="op" id="operation">(3) + (−2) = ?</div>
+            <div class="prompt">Resuelve</div>
+            <div class="op" id="operation">—</div>
             <div class="legend"><span class="badge">Puntuación</span> Correcta: +1 · Incorrecta: −0,5 · En blanco: 0</div>
           </div>
           <div>
-            <input id="answer" class="input" type="number" placeholder="Escribe un número entero (puede ser negativo)" />
+            <input id="answer" class="input" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false"
+                   placeholder="Respuesta (ej: -7, 3/4, 2^3, 5*RAIZ(2,4))" />
             <div class="btns" style="margin-top:10px">
               <button class="btn primary" id="check">Comprobar</button>
               <button class="btn secondary" id="skip">Saltar</button>
+              <button class="btn danger" id="back">Volver al menú</button>
             </div>
           </div>
         </div>
-        <div class="hint">Consejo: Los números negativos se muestran entre paréntesis para que sean más claros.</div>
+        <div class="hint" id="modeHint">—</div>
       </div>
 
       <div id="final" style="display:none" class="fade-enter">
         <div class="result-title">🏆 Resultado final: <span class="score" id="score">0</span> puntos</div>
-        <div class="tiny">Se muestran tus respuestas y la solución de cada operación.</div>
+        <div class="tiny" id="finalMeta">—</div>
         <div id="list" class="list"></div>
         <div class="footer">
-          <div class="tiny">¿Otra partida? Se generan 10 operaciones nuevas al reiniciar.</div>
-          <button class="btn primary" id="restart">🔄 Reiniciar</button>
+          <div class="tiny">Puedes repetir el mismo modo o volver al menú.</div>
+          <div class="btns">
+            <button class="btn secondary" id="menuBtn">🏠 Menú</button>
+            <button class="btn primary" id="restart">🔄 Repetir modo</button>
+          </div>
         </div>
       </div>
+
     </section>
   </main>
 
 <script>
 (function(){
   const TOTAL = 10;
+
+  const modeSubtitle = document.getElementById('modeSubtitle');
   const statusEl = document.getElementById('status');
+  const progressWrap = document.getElementById('progressWrap');
   const bar = document.getElementById('bar');
+
+  const menu = document.getElementById('menu');
+  const quiz = document.getElementById('quiz');
+  const final = document.getElementById('final');
+
   const opEl = document.getElementById('operation');
   const input = document.getElementById('answer');
   const checkBtn = document.getElementById('check');
   const skipBtn = document.getElementById('skip');
-  const quiz = document.getElementById('quiz');
-  const final = document.getElementById('final');
+  const backBtn = document.getElementById('back');
+
   const scoreEl = document.getElementById('score');
   const listEl = document.getElementById('list');
   const restartBtn = document.getElementById('restart');
+  const menuBtn = document.getElementById('menuBtn');
+  const modeHint = document.getElementById('modeHint');
+  const finalMeta = document.getElementById('finalMeta');
 
   function rnd(min, max){ return Math.floor(Math.random()*(max-min+1))+min; }
   function choose(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
   function formatInt(n){ return n < 0 ? `(${n})` : `${n}`; }
 
-  function buildQuestion(){
+  function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ const t=a%b; a=b; b=t; } return a||1; }
+  function simp(r){ if(r.den<0){ r.num=-r.num; r.den=-r.den; } const g=gcd(r.num,r.den); return { num: r.num/g, den: r.den/g }; }
+  function add(a,b){ return simp({ num: a.num*b.den + b.num*a.den, den: a.den*b.den }); }
+  function sub(a,b){ return simp({ num: a.num*b.den - b.num*a.den, den: a.den*b.den }); }
+  function mul(a,b){ return simp({ num: a.num*b.num, den: a.den*b.den }); }
+  function div(a,b){ return simp({ num: a.num*b.den, den: a.den*b.num }); }
+  function toNumber(r){ return r.num / r.den; }
+  function rat(n){ return { num:n, den:1 }; }
+  function formatRational(r){ const s=simp(r); return (s.den===1) ? `${s.num}` : `${s.num}/${s.den}`; }
+
+  // -------- Evaluador seguro de expresiones --------
+  // Admite: + - * / ^ ( ) y RAIZ(a,b)
+  function stripSpaces(s){
+    let out='';
+    for(let i=0;i<s.length;i++){
+      const c=s[i];
+      if(c !== ' ' && c !== '\n' && c !== '\t' && c !== '\r') out += c;
+    }
+    return out;
+  }
+  function isDigit(ch){ return ch>='0' && ch<='9'; }
+
+  function tokenizeExpr(expr){
+    const s = stripSpaces(expr);
+    const out=[];
+    let i=0;
+    while(i<s.length){
+      const c=s[i];
+      if(isDigit(c) || c==='.'){ 
+        let j=i+1;
+        while(j<s.length && (isDigit(s[j]) || s[j]==='.' )) j++;
+        out.push({t:'num', v:Number(s.slice(i,j))});
+        i=j; continue;
+      }
+      const isLetter = (c>='A'&&c<='Z')||(c>='a'&&c<='z')||c==='Ñ'||c==='ñ';
+      if(isLetter){
+        let j=i+1;
+        while(j<s.length){
+          const cc=s[j];
+          const ok=(cc>='A'&&cc<='Z')||(cc>='a'&&cc<='z')||cc==='Ñ'||cc==='ñ';
+          if(!ok) break;
+          j++;
+        }
+        out.push({t:'id', v:s.slice(i,j).toUpperCase()});
+        i=j; continue;
+      }
+      if(c===','){ out.push({t:'comma'}); i++; continue; }
+      if(c==='+'||c==='-'||c==='*'||c==='/'||c==='^'||c==='('||c===')'){
+        out.push({t:'op', v:c}); i++; continue;
+      }
+      throw new Error('Token');
+    }
+    return out;
+  }
+
+  function toRPN(tokens){
+    const out=[];
+    const st=[];
+    const prec = { '^':4, '*':3, '/':3, '+':2, '-':2, 'NEG':5 };
+    const rightAssoc = { '^': true };
+    let prev=null;
+
+    for(const tk of tokens){
+      if(tk.t==='num'){
+        if(!Number.isFinite(tk.v)) throw new Error('Num');
+        out.push(tk);
+      } else if(tk.t==='id'){
+        st.push(tk);
+      } else if(tk.t==='comma'){
+        while(st.length && !(st[st.length-1].t==='op' && st[st.length-1].v==='(')) out.push(st.pop());
+      } else if(tk.t==='op' && tk.v==='('){
+        st.push(tk);
+      } else if(tk.t==='op' && tk.v===')'){
+        while(st.length && !(st[st.length-1].t==='op' && st[st.length-1].v==='(')) out.push(st.pop());
+        if(!st.length) throw new Error('Par');
+        st.pop();
+        if(st.length && st[st.length-1].t==='id') out.push(st.pop());
+      } else if(tk.t==='op'){
+        let op=tk.v;
+        const unaryMinus = (op==='-' && (prev==null || (prev.t==='op' && prev.v!==')') || prev.t==='comma'));
+        if(unaryMinus) op='NEG';
+
+        while(st.length){
+          const top=st[st.length-1];
+          if(top.t==='id'){ out.push(st.pop()); continue; }
+          if(top.t==='op' && top.v!=='('){
+            const p1=prec[op];
+            const p2=prec[top.v];
+            if(p2==null) break;
+            if(rightAssoc[op] ? (p1 < p2) : (p1 <= p2)) { out.push(st.pop()); continue; }
+          }
+          break;
+        }
+        st.push({t:'op', v:op});
+      }
+      prev=tk;
+    }
+
+    while(st.length){
+      const tk=st.pop();
+      if(tk.t==='op' && (tk.v==='('||tk.v===')')) throw new Error('Par');
+      out.push(tk);
+    }
+    return out;
+  }
+
+  function evalRPN(rpn){
+    const st=[];
+    for(const tk of rpn){
+      if(tk.t==='num'){
+        st.push(tk.v);
+      } else if(tk.t==='op'){
+        if(tk.v==='NEG'){
+          if(st.length<1) throw new Error('NEG');
+          st.push(-st.pop());
+          continue;
+        }
+        if(st.length<2) throw new Error('OP');
+        const b=st.pop();
+        const a=st.pop();
+        switch(tk.v){
+          case '+': st.push(a+b); break;
+          case '-': st.push(a-b); break;
+          case '*': st.push(a*b); break;
+          case '/': st.push(a/b); break;
+          case '^': st.push(Math.pow(a,b)); break;
+          default: throw new Error('OP');
+        }
+      } else if(tk.t==='id'){
+        if(tk.v==='RAIZ'){
+          if(st.length<2) throw new Error('RAIZ');
+          const b=st.pop();
+          const a=st.pop();
+          st.push(Math.pow(a, 1/b));
+        } else {
+          throw new Error('FN');
+        }
+      }
+    }
+    if(st.length!==1) throw new Error('Expr');
+    const v=st[0];
+    if(!Number.isFinite(v)) throw new Error('Res');
+    return v;
+  }
+
+  // Devuelve { rat, value, approx }.
+  function parseUser(inputStr){
+    const raw=(inputStr||'').trim();
+    const s=raw.replace(',', '.');
+    if(s==='') return null;
+
+    const upper = s.toUpperCase();
+    const looksExpr = (s.includes('^') || s.includes('*') || s.includes('(') || s.includes(')') || upper.includes('RAIZ('));
+
+    if(looksExpr){
+      try{
+        const val = evalRPN(toRPN(tokenizeExpr(upper)));
+        const scaled = Math.round(val * 1_000_000);
+        const rr = simp({ num: scaled, den: 1_000_000 });
+        return { rat: rr, value: val, approx: true };
+      } catch(_e){
+        return null;
+      }
+    }
+
+    if(s.includes('/')){
+      const parts=s.split('/');
+      if(parts.length!==2) return null;
+      const a=Number(parts[0]);
+      const b=Number(parts[1]);
+      if(!Number.isFinite(a)||!Number.isFinite(b)||b===0) return null;
+      if(!Number.isInteger(a)||!Number.isInteger(b)) return null;
+      const rr=simp({num:a, den:b});
+      return { rat: rr, value: toNumber(rr), approx: false };
+    }
+
+    const n=Number(s);
+    if(!Number.isFinite(n)) return null;
+    const scaled=Math.round(n*1_000_000);
+    const rr=simp({num:scaled, den:1_000_000});
+    return { rat: rr, value: n, approx: false };
+  }
+
+  function equalsExpected(user, expectedRat){
+    if(!user) return false;
+    const u = simp(user.rat);
+    const e = simp(expectedRat);
+    return (u.num===e.num && u.den===e.den);
+  }
+
+  function equalsExpectedRelaxed(user, expectedRat){
+    if(!user) return false;
+    if(equalsExpected(user, expectedRat)) return true;
+    const uN = user.value;
+    const eN = toNumber(expectedRat);
+    return Math.abs(uN - eN) < 1e-9;
+  }
+
+  function equalsExpectedSmart(user, expectedRat, relaxed){
+    if(!user) return false;
+    if(user.approx) return equalsExpectedRelaxed(user, expectedRat);
+    return relaxed ? equalsExpectedRelaxed(user, expectedRat) : equalsExpected(user, expectedRat);
+  }
+
+  // -------- Generadores --------
+  function qEnteros(){
     const ops = ['+','-','×'];
     const op = choose(ops);
     let a,b;
     if(op==='×'){ a=rnd(-10,10); b=rnd(-10,10); if(a===0 && b===0) b=1; }
     else { a=rnd(-20,20); b=rnd(-20,20); }
-    let result = op==='+'? a+b : op==='-'? a-b : a*b;
-    return {a,b,op,result};
+    const result = (op==='+')? a+b : (op==='-')? a-b : a*b;
+    return { text: `${formatInt(a)} ${op} ${formatInt(b)} = ?`, expected: rat(result) };
   }
-  function generateQuiz(n=TOTAL){ return Array.from({length:n}, buildQuestion); }
 
-  let questions = generateQuiz();
+  function qCombinadas(){
+    function intDiv(){ const d=rnd(2,9); const k=rnd(-12,12)||4; return { n:d*k, d, value:k }; }
+    const pattern = choose([1,2,3,4,5]);
+
+    if(pattern===1){
+      const a=rnd(-20,20), b=rnd(-10,10), c=rnd(-10,10), d=rnd(-20,20);
+      const v = sub(add(rat(a), mul(rat(b), rat(c))), rat(d));
+      return { text: `${formatInt(a)} + ${formatInt(b)} × ${formatInt(c)} − ${formatInt(d)} = ?`, expected: v };
+    }
+    if(pattern===2){
+      const a=rnd(-12,12), b=rnd(-12,12), c=rnd(-9,9) || 2, d=rnd(-20,20);
+      const v = sub(mul(rat(a+b), rat(c)), rat(d));
+      return { text: `(${formatInt(a)} + ${formatInt(b)}) × ${formatInt(c)} − ${formatInt(d)} = ?`, expected: v };
+    }
+    if(pattern===3){
+      const a=rnd(-20,20), b=rnd(-12,12), c=rnd(-12,12), d=rnd(-9,9) || 3;
+      const v = add(rat(a), mul(rat(b-c), rat(d)));
+      return { text: `${formatInt(a)} + (${formatInt(b)} − ${formatInt(c)}) × ${formatInt(d)} = ?`, expected: v };
+    }
+    if(pattern===4){
+      const div1=intDiv(); const b=rnd(-15,15); const a=b+div1.n; const c=rnd(-20,20);
+      const v = add(rat(div1.value), rat(c));
+      return { text: `(${formatInt(a)} − ${formatInt(b)}) ÷ ${formatInt(div1.d)} + ${formatInt(c)} = ?`, expected: v };
+    }
+
+    const div1=intDiv(); const b=rnd(-8,8), c=rnd(-8,8), e=rnd(-15,15);
+    const v = sub(add(rat(div1.value), mul(rat(b), rat(c))), rat(e));
+    return { text: `(${formatInt(div1.n)} ÷ ${formatInt(div1.d)}) + (${formatInt(b)} × ${formatInt(c)}) − ${formatInt(e)} = ?`, expected: v };
+  }
+
+  function qFracciones(){
+    function fr(){
+      let den = rnd(2,9);
+      let num = rnd(-9,9);
+      if(num===0) num = choose([-4,-3,-2,2,3,4]);
+      return simp({ num, den });
+    }
+    const a = fr();
+    const b = fr();
+    const op = choose(['+','-','×','÷']);
+    let expected;
+    if(op==='+') expected = add(a,b);
+    else if(op==='-') expected = sub(a,b);
+    else if(op==='×') expected = mul(a,b);
+    else expected = div(a,b);
+    return { text: `${formatRational(a)} ${op} ${formatRational(b)} = ?`, expected };
+  }
+
+  function qPotencias(){
+    const pattern = choose([1,2,3,4,5]);
+
+    if(pattern===1){
+      const a=rnd(-5,5) || 2;
+      const m=rnd(1,4), n=rnd(1,4);
+      const exp=m+n;
+      const val=Math.pow(a,exp);
+      const A=a<0?`(${a})`:`${a}`;
+      return { text:`${A}<sup>${m}</sup> · ${A}<sup>${n}</sup> = ?`, expected: rat(val) };
+    }
+
+    if(pattern===2){
+      const a=rnd(-5,5) || 2;
+      let m=rnd(1,5), n=rnd(1,5);
+      while(m===n) n=rnd(1,5);
+      const exp=m-n;
+      const A=a<0?`(${a})`:`${a}`;
+      if(exp>=0) return { text:`${A}<sup>${m}</sup> ÷ ${A}<sup>${n}</sup> = ?`, expected: rat(Math.pow(a,exp)) };
+      const denRaw=Math.pow(a,-exp);
+      return { text:`${A}<sup>${m}</sup> ÷ ${A}<sup>${n}</sup> = ?`, expected: simp({ num: denRaw<0?-1:1, den: Math.abs(denRaw) }) };
+    }
+
+    if(pattern===3){
+      const a=rnd(-5,5) || -2;
+      const m=rnd(1,3), n=rnd(2,4);
+      const exp=m*n;
+      const val=Math.pow(a,exp);
+      const A=a<0?`(${a})`:`${a}`;
+      return { text:`(${A}<sup>${m}</sup>)<sup>${n}</sup> = ?`, expected: rat(val) };
+    }
+
+    if(pattern===4){
+      const a=rnd(2,7);
+      const n=rnd(1,4);
+      return { text:`${a}<sup>-${n}</sup> = ?`, expected: simp({ num:1, den: Math.pow(a,n) }) };
+    }
+
+    const a=rnd(2,6), b=rnd(2,6), m=rnd(2,4);
+    return { text:`(${a}<sup>${m}</sup> · ${b}<sup>${m}</sup>) ÷ (${a*b}<sup>${m}</sup>) = ?`, expected: rat(1) };
+  }
+
+  function qRadicales(){
+    const pattern = choose([1,2,3,4,5,6]);
+    const squares = [4,9,16,25,36,49,64,81,100,121,144];
+    const cubes = [8,27,64,125,216];
+    function sq(){ return choose(squares); }
+
+    if(pattern===1){
+      const a=sq(), b=sq();
+      const n=a*b;
+      const v=Math.round(Math.sqrt(a))*Math.round(Math.sqrt(b));
+      return { text:`√${n} = ?`, expected: rat(v) };
+    }
+    if(pattern===2){
+      const a=sq(), b=sq();
+      return { text:`√${a} · √${b} = ?`, expected: rat(Math.round(Math.sqrt(a*b))) };
+    }
+    if(pattern===3){
+      const b=choose([4,9,16,25]);
+      const q=choose([4,9,16,25,36]);
+      const a=b*q;
+      return { text:`√${a} ÷ √${b} = ?`, expected: rat(Math.round(Math.sqrt(q))) };
+    }
+    if(pattern===4){
+      const a=sq(), b=sq(), c=sq();
+      const v=Math.round(Math.sqrt(a)) + Math.round(Math.sqrt(b)) - Math.round(Math.sqrt(c));
+      return { text:`√${a} + √${b} − √${c} = ?`, expected: rat(v) };
+    }
+    if(pattern===5){
+      const a=sq();
+      return { text:`${a}<sup>1/2</sup> = ?`, expected: rat(Math.round(Math.sqrt(a))) };
+    }
+
+    const q=choose([2,3]);
+    if(q===2){
+      const a=sq();
+      const p=choose([3,5]);
+      const v=Math.pow(Math.round(Math.sqrt(a)), p);
+      return { text:`${a}<sup>${p}/2</sup> = ?`, expected: rat(v) };
+    }
+    const a=choose(cubes);
+    const p=choose([2,4]);
+    const base=Math.round(Math.cbrt(a));
+    const v=Math.pow(base,p);
+    return { text:`${a}<sup>${p}/3</sup> = ?`, expected: rat(v) };
+  }
+
+  function modeInfo(mode){
+    switch(mode){
+      case 'enteros':
+        return { name:'Números enteros', hint:'Responde con un entero: -7. También puedes usar expresiones: 2^3, (1-3)*4.', generator:qEnteros, relaxed:false };
+      case 'combinadas':
+        return { name:'Operaciones combinadas', hint:'Prioridad: paréntesis, luego ×/÷, luego +/−. También puedes usar: 2^3, (1-3)*4.', generator:qCombinadas, relaxed:false };
+      case 'fracciones':
+        return { name:'Fracciones', hint:'Responde como fracción (ej: -3/4) o decimal equivalente. También puedes usar expresiones con / y paréntesis.', generator:qFracciones, relaxed:true };
+      case 'potencias':
+        return { name:'Potencias', hint:'Puedes responder con fracción/decimal o con expresión: 2^(-3), (2^3)*(2^-1).', generator:qPotencias, relaxed:true };
+      case 'radicales':
+        return { name:'Radicales', hint:'Puedes responder numérico o con RAIZ(a,b). Ejemplos: RAIZ(2,2) (=√2), 3*RAIZ(2,2), 5*RAIZ(2,4), 16^(1/2).', generator:qRadicales, relaxed:true };
+      default:
+        return { name:'', hint:'', generator:qEnteros, relaxed:false };
+    }
+  }
+
+  let mode = null;
+  let questions = [];
   let idx = 0;
-  let answers = []; // {given, correct, blank, expected}
+  let answers = [];
 
-  function updateUI(){
-    statusEl.textContent = idx < TOTAL ? `Pregunta ${idx+1} de ${TOTAL}` : 'Completado';
-    bar.style.width = `${(answers.length/TOTAL)*100}%`;
-    if(idx < TOTAL){
-      const q = questions[idx];
-      opEl.textContent = `${formatInt(q.a)} ${q.op} ${formatInt(q.b)} = ?`;
-      input.value='';
-      input.focus();
-    }
+  function showMenu(){
+    mode = null;
+    questions = [];
+    idx = 0;
+    answers = [];
+
+    progressWrap.style.display = 'none';
+    statusEl.textContent = '—';
+    modeSubtitle.textContent = 'Elige un modo para empezar';
+
+    menu.style.display = 'block';
+    quiz.style.display = 'none';
+    final.style.display = 'none';
+
+    input.value = '';
   }
 
-  function submit(action){
-    const q = questions[idx];
-    const blank = action==='skip' || input.value.trim()==='';
-    let correct=false; let given=input.value.trim();
-    if(!blank){
-      const n = Number(given);
-      if(Number.isInteger(n)) correct = (n===q.result);
-      else correct=false; // no es entero
+  function startMode(newMode){
+    if(newMode==='salir'){
+      modeSubtitle.textContent = '¡Hasta luego!';
+      statusEl.textContent = 'Puedes cerrar la pestaña.';
+      return;
     }
-    answers.push({ given, correct, blank, expected:q.result, a:q.a, b:q.b, op:q.op });
-    idx++;
 
-    if(idx>=TOTAL){ endGame(); } else { updateUI(); }
+    mode = newMode;
+    const info = modeInfo(mode);
+    modeSubtitle.textContent = `Modo: ${info.name}`;
+    modeHint.innerHTML = info.hint;
+
+    // Generar 10 preguntas sin repetir (por texto)
+    const seen = new Set();
+    questions = [];
+    let tries = 0;
+    while(questions.length < TOTAL && tries < 600){
+      const q = info.generator();
+      if(!seen.has(q.text)){
+        seen.add(q.text);
+        questions.push(q);
+      }
+      tries++;
+    }
+    while(questions.length < TOTAL) questions.push(info.generator());
+
+    idx = 0;
+    answers = [];
+
+    progressWrap.style.display = 'block';
+    bar.style.width = '0%';
+
+    menu.style.display = 'none';
+    quiz.style.display = 'block';
+    final.style.display = 'none';
+
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    statusEl.textContent = `Pregunta ${idx+1} de ${TOTAL}`;
+    bar.style.width = `${(answers.length/TOTAL)*100}%`;
+
+    const q = questions[idx];
+    opEl.innerHTML = q.text;
+
+    input.value = '';
+    input.focus();
   }
 
   function calcScore(){
     return answers.reduce((s,a)=> s + (a.blank?0:(a.correct?1:-0.5)), 0);
   }
 
-  function endGame(){
-    quiz.style.display='none';
-    final.style.display='block';
-    scoreEl.textContent = calcScore().toFixed(1);
-    listEl.innerHTML='';
-    answers.forEach((a,i)=>{
-      const row=document.createElement('div'); row.className='row';
-      const left=document.createElement('div'); left.style.fontWeight='700'; left.style.fontSize='18px';
-      left.textContent = `${formatInt(a.a)} ${a.op} ${formatInt(a.b)} = ${a.expected}`;
-      const right=document.createElement('div'); right.style.display='flex'; right.style.alignItems='center'; right.style.gap='8px'; right.style.fontSize='14px';
-      if(a.blank){ right.className='blank'; right.textContent='◻️ En blanco'; }
-      else if(a.correct){ right.className='ok'; right.textContent='✅ ¡Correcta!'; }
-      else { right.className='bad'; right.textContent=`❌ Incorrecta (tu respuesta: ${a.given||'—'})`; }
-      row.append(left,right); listEl.appendChild(row);
+  function submit(action){
+    if(!mode) return;
+    const q = questions[idx];
+    const blank = (action==='skip') || (input.value.trim()==='');
+
+    let correct = false;
+    const given = input.value.trim();
+
+    if(!blank){
+      const u = parseUser(given);
+      const info = modeInfo(mode);
+      correct = u ? equalsExpectedSmart(u, q.expected, info.relaxed) : false;
+    }
+
+    answers.push({
+      qText: q.text.replace(/<[^>]*>/g,''),
+      expected: q.expected,
+      given,
+      correct,
+      blank
     });
-    statusEl.textContent='Completado';
-    bar.style.width='100%';
+
+    idx++;
+    if(idx>=TOTAL) endGame();
+    else renderQuestion();
   }
 
-  function restart(){
-    questions = generateQuiz(); idx=0; answers=[];
-    final.style.display='none'; quiz.style.display='block';
-    updateUI();
+  function endGame(){
+    quiz.style.display = 'none';
+    final.style.display = 'block';
+
+    const sc = calcScore();
+    scoreEl.textContent = sc.toFixed(1);
+    finalMeta.textContent = `${modeInfo(mode).name} · ${TOTAL} preguntas`;
+
+    listEl.innerHTML = '';
+    answers.forEach((a,i)=>{
+      const row = document.createElement('div');
+      row.className = 'row';
+
+      const left = document.createElement('div');
+      left.className = 'left';
+      left.textContent = `${i+1}. ${a.qText}  →  ${formatRational(a.expected)}`;
+
+      const right = document.createElement('div');
+      right.className = 'right';
+      if(a.blank){
+        right.classList.add('blank');
+        right.textContent = '◻️ En blanco';
+      } else if(a.correct){
+        right.classList.add('ok');
+        right.textContent = '✅ ¡Correcta!';
+      } else {
+        right.classList.add('bad');
+        right.textContent = `❌ Incorrecta (tu: ${a.given||'—'})`;
+      }
+
+      row.appendChild(left);
+      row.appendChild(right);
+      listEl.appendChild(row);
+    });
+
+    statusEl.textContent = 'Completado';
+    bar.style.width = '100%';
   }
 
-  checkBtn.addEventListener('click', ()=> submit('submit'));
-  skipBtn.addEventListener('click', ()=> submit('skip'));
-  restartBtn.addEventListener('click', restart);
+  function restartSameMode(){
+    if(!mode) return;
+    startMode(mode);
+  }
+
+  document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.addEventListener('click', () => startMode(btn.dataset.mode));
+  });
+
+  checkBtn.addEventListener('click', () => submit('submit'));
+  skipBtn.addEventListener('click', () => submit('skip'));
+  backBtn.addEventListener('click', showMenu);
+
+  restartBtn.addEventListener('click', restartSameMode);
+  menuBtn.addEventListener('click', showMenu);
+
   input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') submit('submit'); });
 
-  updateUI();
+  // -------- Tests (consola) --------
+  function assert(name, cond){
+    if(!cond) throw new Error('Test fallido: ' + name);
+  }
+  function runTests(){
+    const t1 = parseUser('2^3');
+    assert('2^3 = 8', t1 && Math.abs(t1.value - 8) < 1e-9);
+    const t2 = parseUser('5*RAIZ(2,4)');
+    assert('5*RAIZ(2,4)', t2 && Number.isFinite(t2.value));
+    const t3 = parseUser('3*RAIZ(2,2)');
+    assert('3*RAIZ(2,2)', t3 && Math.abs(t3.value - (3*Math.sqrt(2))) < 1e-9);
+    const t4 = parseUser('16^(1/2)');
+    assert('16^(1/2)=4', t4 && Math.abs(t4.value - 4) < 1e-9);
+    const t5 = stripSpaces('a\n\t b\r') === 'ab';
+    assert('stripSpaces whitespace', t5);
+    console.log('✅ Tests OK');
+  }
+
+  try{ runTests(); }catch(e){ console.error(e); }
+
+  showMenu();
 })();
 </script>
 </body>
